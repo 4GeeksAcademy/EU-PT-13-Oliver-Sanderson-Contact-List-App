@@ -1,54 +1,57 @@
+import { json } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			],
-			points: 10,
-			contacts: ["test"]
+			contacts: ["test"],
+			editID: 0
 		},
 		
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
+
 			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
 				fetch("https://playground.4geeks.com/apis/fake/contact/agenda/oliver")
 				.then((recieved) => recieved.json())
 				.then((data) => {setStore({ "contacts": data }); console.log(data)})
 			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
+			editClicked: (id) => {
+				console.log("Edit pressed")
+				console.log(id)
+				setStore({"editID": id})
+				useNavigate("/edit");
 			},
-			changePoints: (point) => {
 
-				console.log("changed?")
-				setStore({ "points": point })
+			deleteClicked: (id) => {
+				if(confirm("Are you sure to want to delete this contact?")) {
+					console.log("Delete pressed")
+					console.log(id)
+					fetch(`https://playground.4geeks.com/apis/fake/contact/${id}`, {
+						method:"DELETE"
+					}).then((recieved) => recieved.json())
+					.then((data) => console.log(data))
+				}
+			},
 
+			newContactClicked: (name, email, address, phone) => {
+				console.log("New contact pressed")
+				fetch("https://playground.4geeks.com/apis/fake/contact/", {
+					method: "POST",
+					body: JSON.stringify(
+						{
+							"full_name": name,
+							"email": email,
+							"agenda_slug": "oliver",
+							"address": address,
+							"phone": phone
+						}),
+					headers: {
+						"Content-Type": "application/json"
+					}
+					
+				}).then((recieved) => recieved.json())
+				.then((data) => console.log(data))
 			}
 		}
 	};

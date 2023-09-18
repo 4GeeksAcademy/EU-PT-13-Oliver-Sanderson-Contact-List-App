@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Contacts } from "./contacts";
 
 export const Home = () => (
-	<div className="text-center mt-5">
+	<div className="container">
 		<Contacts />
 	</div>
 );
