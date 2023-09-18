@@ -12,8 +12,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			points: 10,
+			contacts: ["test"]
 		},
+		
 		actions: {
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
@@ -23,6 +26,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				/**
 					fetch().then().then(data => setStore({ "foo": data.bar }))
 				*/
+				fetch("https://playground.4geeks.com/apis/fake/contact/agenda/oliver")
+				.then((recieved) => recieved.json())
+				.then((data) => {setStore({ "contacts": data }); console.log(data)})
 			},
 			changeColor: (index, color) => {
 				//get the store
@@ -37,6 +43,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+			changePoints: (point) => {
+
+				console.log("changed?")
+				setStore({ "points": point })
+
 			}
 		}
 	};
