@@ -34,24 +34,46 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			newContactClicked: (name, email, address, phone) => {
+			newContactClicked: (name, email, address, phone, current) => {
 				console.log("New contact pressed")
-				fetch("https://playground.4geeks.com/apis/fake/contact/", {
-					method: "POST",
-					body: JSON.stringify(
-						{
-							"full_name": name,
-							"email": email,
-							"agenda_slug": "oliver",
-							"address": address,
-							"phone": phone
-						}),
-					headers: {
-						"Content-Type": "application/json"
-					}
-					
-				}).then((recieved) => recieved.json())
-				.then((data) => console.log(data))
+				console.log(current)
+				if(current) {
+					fetch(`https://playground.4geeks.com/apis/fake/contact/${current.id}`, {
+						method: "PUT",
+						body: JSON.stringify(
+							{
+								"full_name": name,
+								"email": email,
+								"agenda_slug": "oliver",
+								"address": address,
+								"phone": phone
+							}),
+						headers: {
+							"Content-Type": "application/json"
+						}
+						
+					}).then((recieved) => recieved.json())
+					.then((data) => console.log(data))
+				} else {
+					fetch("https://playground.4geeks.com/apis/fake/contact/", {
+						method: "POST",
+						body: JSON.stringify(
+							{
+								"full_name": name,
+								"email": email,
+								"agenda_slug": "oliver",
+								"address": address,
+								"phone": phone
+							}),
+						headers: {
+							"Content-Type": "application/json"
+						}
+						
+					}).then((recieved) => recieved.json())
+					.then((data) => console.log(data))
+				}
+
+
 			}
 		}
 	};

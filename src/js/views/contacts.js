@@ -19,7 +19,7 @@ export const Contacts = ( ) => {
 
     return (
         <div>
-            <Link to="/new" className="btn btn-success">Add New Contact</Link>
+            <Link to="/edit" className="btn btn-success">Add New Contact</Link>
             {profiles} 
         </div>
     )

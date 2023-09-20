@@ -1,9 +1,36 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 export const EditContact = () => {
     const { store, actions } = useContext(Context);
+    const [nameInput, setNameInput] = useState("")
+    const [emailInput, setEmailInput] = useState("")
+    const [addressInput, setAddressInput] = useState("")
+    const [phoneInput, setPhoneInput] = useState("")
+    const params = useParams();
+    let currentContact = null
+
+
+    useEffect(() => {
+        if(params.theid) {
+            currentContact = store.contacts.find((element) => element.id == params.theid)
+            console.log("CURRENT CONTACT")
+            console.log(currentContact)
+            console.log("CURRENT CONTACTB")
+            if(currentContact) {
+                setNameInput(currentContact.full_name)
+                setEmailInput(currentContact.email)
+                setAddressInput(currentContact.address)
+                setPhoneInput(currentContact.phone)
+            }
+
+        } else {
+            console.log("NO")
+        }
+      }, []);
+
+
 
     return (
         <div className="container">
@@ -16,25 +43,25 @@ export const EditContact = () => {
                 <div className="row m-2">
                     <label className="col-2">Full Name:
                     </label>
-                    <input id="nameInput" className="col-10"></input>
+                    <input id="nameInput" className="col-10" value={nameInput} onChange={e => setNameInput(e.target.value)}></input>
                 </div>
 
                 <div className="row m-2">
                     <label className="col-2">Email:
                     </label>
-                    <input id="emailInput" className="col-10"></input>
+                    <input id="emailInput" className="col-10" value={emailInput} onChange={e => setEmailInput(e.target.value)}></input>
                 </div>
 
                 <div className="row m-2">
                     <label className="col-2">Address:
                     </label>
-                    <input id="addressInput" className="col-10"></input>
+                    <input id="addressInput" className="col-10" value={addressInput} onChange={e => setAddressInput(e.target.value)}></input>
                 </div>
 
                 <div className="row m-2">
                     <label className="col-2">Phone:
                     </label>
-                    <input id="phoneInput" className="col-10"></input>
+                    <input id="phoneInput" className="col-10" value={phoneInput} onChange={e => setPhoneInput(e.target.value)}></input>
                 </div>
 
 
@@ -45,7 +72,8 @@ export const EditContact = () => {
                 document.getElementById("nameInput").value,
                 document.getElementById("emailInput").value,
                 document.getElementById("addressInput").value,
-                document.getElementById("phoneInput").value
+                document.getElementById("phoneInput").value,
+                store.contacts.find((element) => element.id == params.theid)
                 )}>Submit</button>
         </div>
     )

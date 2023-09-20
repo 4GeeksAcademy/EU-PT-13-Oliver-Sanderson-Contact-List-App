@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 
 import { Context } from "../store/appContext";
 
@@ -12,6 +13,7 @@ export const SingleContact = (props) => {
                         <p><b>Name:</b> {props.name}</p> 
                         <div>
                             <button className="btn btn-primary" onClick={ () => {actions.editClicked(props.id)} } >Edit</button>
+                            <Link to={`/edit${props.id}`}>Test2</Link>
                             <button className="btn btn-danger" onClick={ () => {actions.deleteClicked(props.id)} } >Delete</button>
                             {props.id} (remove later)
                         </div>
