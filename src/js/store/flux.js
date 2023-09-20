@@ -1,4 +1,4 @@
-import { json } from "react-router";
+import { redirect } from "react-router-dom";
 import { Link, useNavigate } from "react-router-dom";
 
 const getState = ({ getStore, getActions, setStore }) => {
