@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { SingleContact } from "../component/singleContact";
 import { Link } from "react-router-dom";
@@ -20,7 +20,7 @@ export const Contacts = ( ) => {
     return (
         <div>
             <Link to="/edit" className="btn btn-success">Add New Contact</Link>
-            {profiles} 
+            {profiles}
         </div>
     )
 }

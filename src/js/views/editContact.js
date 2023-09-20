@@ -15,9 +15,6 @@ export const EditContact = () => {
     useEffect(() => {
         if(params.theid) {
             currentContact = store.contacts.find((element) => element.id == params.theid)
-            console.log("CURRENT CONTACT")
-            console.log(currentContact)
-            console.log("CURRENT CONTACTB")
             if(currentContact) {
                 setNameInput(currentContact.full_name)
                 setEmailInput(currentContact.email)
@@ -25,8 +22,6 @@ export const EditContact = () => {
                 setPhoneInput(currentContact.phone)
             }
 
-        } else {
-            console.log("NO")
         }
       }, []);
 
@@ -35,7 +30,7 @@ export const EditContact = () => {
     return (
         <div className="container">
             <div className="d-flex justify-content-between mb-3">
-                <h3>Edit Contact</h3>
+                <h3>{`Edit Contact`}</h3>
                 <Link to="/" className="btn btn-danger">Return</Link>
             </div>
         

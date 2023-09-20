@@ -5,38 +5,52 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			contacts: ["test"],
-			editID: 0
+			change: false
 		},
 		
 		actions: {
 
 			loadSomeData: () => {
-				fetch("https://playground.4geeks.com/apis/fake/contact/agenda/oliver")
-				.then((recieved) => recieved.json())
-				.then((data) => {setStore({ "contacts": data }); console.log(data)})
-			},
+				document.getElementById("connectionMessage").innerHTML = ("")
 
-			editClicked: (id) => {
-				console.log("Edit pressed")
-				console.log(id)
-				setStore({"editID": id})
-				useNavigate("/edit");
+				fetch("https://playground.4geeks.com/apis/fake/contact/agenda/oliver")
+				.then((recieved) =>  {
+					if(!recieved.ok) {
+						document.getElementById("connectionMessage").innerHTML = ("Connection problems: " + recieved.status )
+					}
+					return recieved.json()
+				})
+				.then((data) => {setStore({ "contacts": data }); console.log(data)})
 			},
 
 			deleteClicked: (id) => {
 				if(confirm("Are you sure to want to delete this contact?")) {
-					console.log("Delete pressed")
-					console.log(id)
+
+					document.getElementById("connectionMessage").innerHTML = ("")
+
 					fetch(`https://playground.4geeks.com/apis/fake/contact/${id}`, {
 						method:"DELETE"
-					}).then((recieved) => recieved.json())
-					.then((data) => console.log(data))
+					}).then((recieved) => 
+					{	
+						console.log(recieved)
+						if(!recieved.ok) {
+							console.log(recieved.status)
+							document.getElementById("connectionMessage").innerHTML = ("Connection problems: " + recieved.status )
+						}
+						return recieved.json()
+					})
+					.then((data) => {
+						console.log(data);
+						alert("Contact deleted")
+						getActions().loadSomeData()
+						})
 				}
 			},
 
 			newContactClicked: (name, email, address, phone, current) => {
-				console.log("New contact pressed")
-				console.log(current)
+
+				document.getElementById("connectionMessage").innerHTML = (" ")
+
 				if(current) {
 					fetch(`https://playground.4geeks.com/apis/fake/contact/${current.id}`, {
 						method: "PUT",
@@ -52,8 +66,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json"
 						}
 						
-					}).then((recieved) => recieved.json())
-					.then((data) => console.log(data))
+					}).then((recieved) => 
+					{
+						if(!recieved.ok) {
+							document.getElementById("connectionMessage").innerHTML = ("Connection problems: " + recieved.status )
+						}
+						return recieved.json()
+					}
+					)
+					.then((data) => {
+						console.log(data);
+						alert("Contact updated")
+						getActions().loadSomeData()
+					})
 				} else {
 					fetch("https://playground.4geeks.com/apis/fake/contact/", {
 						method: "POST",
@@ -69,8 +94,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json"
 						}
 						
-					}).then((recieved) => recieved.json())
-					.then((data) => console.log(data))
+					}).then((recieved) => 
+					{
+						if(!recieved.ok) {
+							document.getElementById("connectionMessage").innerHTML = ("Connection problems: " + recieved.status )
+						}
+						return recieved.json()
+					})
+					.then((data) => {
+						console.log(data)
+						alert("Contact created")
+						getActions().loadSomeData()
+					})
 				}
 
 

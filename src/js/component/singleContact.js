@@ -12,10 +12,8 @@ export const SingleContact = (props) => {
                     <div className="d-flex justify-content-between "  >
                         <p><b>Name:</b> {props.name}</p> 
                         <div>
-                            <button className="btn btn-primary" onClick={ () => {actions.editClicked(props.id)} } >Edit</button>
-                            <Link to={`/edit${props.id}`}>Test2</Link>
+                            <Link className="btn btn-primary" to={`/edit${props.id}`}>Edit</Link>
                             <button className="btn btn-danger" onClick={ () => {actions.deleteClicked(props.id)} } >Delete</button>
-                            {props.id} (remove later)
                         </div>
                     </div>
                     <p><b>Address:</b> {props.address}</p>
