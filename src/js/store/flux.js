@@ -4,16 +4,37 @@ import { Link, useNavigate } from "react-router-dom";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			contacts: ["test"],
-			change: false
+			contacts: ["loading"],
+			agendas: ["loading"],
+			agenda: "default"
 		},
 		
 		actions: {
 
-			loadSomeData: () => {
+			setAgenda(newAgenda) {
+				setStore({"agenda": newAgenda});
+				getActions().loadSomeData()
+
+			},
+
+			loadAgendas: () => {
 				document.getElementById("connectionMessage").innerHTML = ("")
 
-				fetch("https://playground.4geeks.com/apis/fake/contact/agenda/oliver")
+				fetch("https://playground.4geeks.com/apis/fake/contact/agenda")
+				.then((recieved) => {
+					if(!recieved.ok) {
+						document.getElementById("connectionMessage").innerHTML = ("Connection problems: " + recieved.status )
+					}
+					return recieved.json()
+				}).then((data) => {setStore({ "agendas": data }); console.log(data)})
+
+			},
+
+			loadSomeData: () => {
+
+				document.getElementById("connectionMessage").innerHTML = ("")
+
+				fetch("https://playground.4geeks.com/apis/fake/contact/agenda/" + getStore().agenda)
 				.then((recieved) =>  {
 					if(!recieved.ok) {
 						document.getElementById("connectionMessage").innerHTML = ("Connection problems: " + recieved.status )
@@ -58,7 +79,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							{
 								"full_name": name,
 								"email": email,
-								"agenda_slug": "oliver",
+								"agenda_slug": getStore().agenda,
 								"address": address,
 								"phone": phone
 							}),
@@ -86,7 +107,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							{
 								"full_name": name,
 								"email": email,
-								"agenda_slug": "oliver",
+								"agenda_slug": getStore().agenda,
 								"address": address,
 								"phone": phone
 							}),
